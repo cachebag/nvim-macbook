@@ -31,18 +31,6 @@ return {
       -- Setup completion capabilities
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      -- Configure LSP UI with borders
-      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = "rounded",
-        max_width = 80,
-        max_height = 30,
-      })
-
-      vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-        border = "rounded",
-        max_width = 80,
-      })
-
       -- Configure diagnostic float windows
       vim.diagnostic.config({
         float = {
@@ -89,8 +77,19 @@ return {
           vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
 
           -- Documentation
-          vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-          vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+          vim.keymap.set("n", "K", function()
+            vim.lsp.buf.hover({
+              border = "rounded",
+              max_width = 80,
+              max_height = 30,
+            })
+          end, opts)
+          vim.keymap.set("n", "<C-k>", function()
+            vim.lsp.buf.signature_help({
+              border = "rounded",
+              max_width = 80,
+            })
+          end, opts)
 
           -- Code actions
           vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
